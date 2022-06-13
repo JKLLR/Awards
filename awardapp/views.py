@@ -7,4 +7,4 @@ import datetime as dt
 
 def home(request):
     date = dt.date.today()
-    return render(request, "home.html", {"date": date})
+    return render(request, "profile.html", {"date": date})

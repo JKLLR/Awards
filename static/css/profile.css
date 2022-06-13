@@ -1,0 +1,97 @@
+:root {
+    --canvasColor: #f9f9f9;
+}
+body {
+    background: var(--canvasColor);
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    line-height: 1.5;
+    font-size: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+* {
+    box-sizing: border-box;
+}
+main {
+    --neutralShade1: #f2f2f2;
+    --neutralShade2: #e8e9e9;
+    --neutralShade3: #d1d3d4;
+    --neutralShade4: #babdbf;
+    --neutralShade5: #808488;
+    --neutralShade6: #666a6d;
+    --neutralShade7: #4d5052;
+    --neutralShade8: #212122;
+    --grayColor: #999;
+    --lightGrayColor: #ddd;
+    --borderRadius: 6px;
+    --boxShadow: 0 2px 5px rgba(51, 51, 51, 0.2);
+}
+/*overall layout*/
+main {
+    margin: 3em auto 8em;
+    color: var(--foregroundColor);
+    text-align: left;
+}
+.profile {
+    position: relative;
+    background: var(--backgroundColor);
+    color: var(--foregroundColor);
+    box-shadow: 0 3px 15px rgba(51, 51, 51, 0.2);
+    border-radius: 10px;
+    transition: 0.2s ease;
+}
+.profile a:hover {
+    top: 0;
+    box-shadow: none;
+    background: var(--primaryShade4);
+}
+.profile a:active, .profile a:focus {
+    top: 0;
+    box-shadow: none;
+    background: var(--primaryShade5);
+}
+.profile-smallimg {
+    /* width: 300px; */
+    border-radius: 10px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+    text-align: center;
+}
+.profile-smallimg .profile__image {
+    margin-top: -40px;
+}
+.profile-smallimg .profile__image img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 5px solid var(--backgroundColor);
+    box-shadow: 0 0 0 7px var(--secondaryColor);
+}
+.profile-smallimg .profile__info {
+    margin: 10px 30px 15px;
+}
+.profile-smallimg .profile__stats {
+    margin: 0 30px 10px;
+}
+.profile-smallimg .profile__stats:nth-of-type(n+4) {
+    display: none;
+}
+.profile-smallimg .profile__cta a {
+    border-radius: 0 0 10px 10px;
+}
+.profile-smallimg img{
+    box-shadow: 0 0 0 7px var(--secondaryShade5);
+}
+.profile__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profile__stats__title {
+    color: var(--grayColor);
+    text-transform: uppercase;
+    font-size: 16px;
+} 
