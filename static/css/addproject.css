@@ -41,7 +41,17 @@ label{
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
 }
-.btn{
+.btn {
     color: #444;
     font-weight: 900;
 }
+.btn:hover{
+    background: darkgoldenrod;
+
+}
+@media (max-width: 425px) {
+    .box{
+        width: 100% !important;
+        margin: 3%;
+    }
+} 
