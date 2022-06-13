@@ -15,3 +15,5 @@ def profile(request):
 def project(request):
     return render(request, "project/project.html") 
    
+def add_project(request):
+    return render(request, "project/addproject.html") 
