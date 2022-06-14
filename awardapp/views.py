@@ -1,17 +1,11 @@
-from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
 import datetime as dt
+from django.shortcuts import render,redirect
+from django.contrib.auth.decorators import login_required
+from .forms import AddProjectForm, RateProjectForm, CreateProfileForm
+from .models import Profile, Project
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
-from awardapp.models import Profile, Project
-from .forms import AddProjectForm, CreateProfileForm, RateProjectForm
-
-# Create your views here.
-
-
-def home(request):
-    date = dt.date.today()
-    return render(request, "home.html", {"date": date})
 
 def create_profile(request):
     current_user = request.user
@@ -22,12 +16,17 @@ def create_profile(request):
             profile.user = current_user
             profile.save()
         return HttpResponseRedirect('/')
-
     else:
         form = CreateProfileForm()
     return render(request, 'user/create_profile.html', {"form": form})
-
-
+    
+def home(request):
+    title= "aWWWards"
+    date = dt.date.today()
+    projects = Project.display_all_projects()
+    projects_scores = projects.order_by('-average_score')
+    highest_score = projects_scores[0]
+    return render(request, "home.html", {"date": date, "title": title, "projects": projects, "highest":highest_score})
 @login_required(login_url='/accounts/login/')
 def profile(request, profile_id):
     title = "aWWWards"
@@ -40,16 +39,30 @@ def profile(request, profile_id):
         for project in projects:
             votes.append(project.average_score)
         total_votes = sum(votes)
-        average = total_votes / len(projects)
+        average = 0
+        if len(projects)> 1:
+            average = total_votes / len(projects)
     except Profile.DoesNotExist:
         raise Http404()        
     return render(request, "user/profile.html", {"profile": profile, "projects": projects, "count": projects_count, "votes": total_votes, "average": average})
-
-def project(request):
+@login_required(login_url='/accounts/login/')
+def project(request, project_id):
     form = RateProjectForm()
-    return render(request, 'project/project.html', {"form": form})
- 
-   
+    project = Project.objects.get(pk=project_id)
+    votes = project.voters.count()
+    if votes > 1:
+        average = project.average_score / votes
+    else:
+        average = 0
+    voted = False
+    if project.voters.filter(id=request.user.id).exists():
+        voted = True 
+    voters_list =[]
+    voters = project.voters
+    print(type(voters))
+    return render(request, 'project/project.html', {"form": form, "project": project, "votes": votes, "average": average})
+
+@login_required(login_url='/accounts/login/')
 def add_project(request):
     if request.method == "POST":
         form = AddProjectForm(request.POST, request.FILES)
@@ -62,15 +75,13 @@ def add_project(request):
             project = form.save(commit= False)
             project.profile = profile
             project.save()
-
         return redirect("home")
     else:
         form = AddProjectForm()
-    return render(request, 'project/add_project.html', {"form": form}) 
+    return render(request, 'project/add_project.html', {"form": form})
 
-
-def rate_project(request,id):
-    project = Project.objects.get(pk = id)
+def rate_project(request,project_id):
+    project = Project.objects.get(pk = project_id)
     if request.method == "POST":
         form = RateProjectForm(request.POST)
         if form.is_valid():
@@ -78,29 +89,48 @@ def rate_project(request,id):
             usability = form.cleaned_data['usability']
             content = form.cleaned_data['content']
 
+            profile = Profile.objects.get(user = request.user)
+            project.voters.add(profile)
+
             project.design_score = project.design_score + design
             project.usability_score = project.usability_score + usability
             project.content_score = project.content_score + content
 
-            project.average_design = project.design_score/project.voters_count()
-            project.average_usability = project.usability_score/project.voters_count()
-            project.average_content = project.content_score/project.voters_count()
+            total_voters = project.voters_count()
+            if total_voters > 0:
+                project.average_design = project.design_score/project.voters_count()
+                project.average_usability = project.usability_score/project.voters_count()
+                project.average_content = project.content_score/project.voters_count()
+            else:
+                project.average_design = project.design_score
+                project.average_usability = project.usability_score
+                project.average_content = project.content_score
 
             project.average_score = (project.average_design + project.average_usability + project.average_content)/3
 
             project.save()
             return HttpResponseRedirect(reverse('project'))
+            return HttpResponseRedirect(reverse('project', args =[int(project.id)]))
 
     else:
         form = RateProjectForm()
     return render(request, 'project/project.html', {"form": form})
-
-def project_search(request):
+def search_project(request):
     if "project" in request.GET and request.GET["project"]:
         searched_project = request.GET.get("project")
-        projects = Project.search_project(searched_project)
-        message =f"{searched_project}"
-        return render(request, 'project/search.html', {"projects": projects,"message": message})
+        try:
+            projects = Project.search_project(searched_project)
+            message =f"{searched_project}"
+            if len(projects) == 1:
+                project = projects[0]
+                form = RateProjectForm()
+                return render(request, 'project/project.html', {"form": form, "project": project})
+            return render(request, 'project/search.html', {"projects": projects,"message": message})
+        except ObjectDoesNotExist:
+            projects = Project.display_all_projects()
+            if len(projects)> 1:
+                suggestions = projects[:4]
+                message= f"Found NO projects titled {searched_project}"
+                return render(request, 'project/search.html', {"suggestions":suggestions,"message": message})
     else:
         message = "You haven't searched for any term"
-        return render(request,'project/search.html', {"message": message})
