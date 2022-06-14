@@ -1,72 +1,125 @@
-.of-the-day-wrapper {
-    position: relative;
-    margin-bottom: 10rem;
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    color: #494949;
+    background: #f5f5f5;
+    margin-top: 10rem;
 }
 
-.col-md-8 {
-    padding-right: 5rem;
-    padding-left: 5rem;
+.svg-wrapper {
+    width: 100px;
+    height: 100px;
 }
 
-.of-the-day {
-    position: relative;
-    border-radius: 2px;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, .5);
+svg {
+    transform: rotate(-90deg);
 }
 
-.of-the-day>.cover {
-    position: relative;
-    border-radius: 2px 2px 0 0;
+.inner-circle {
+    fill: none;
+    stroke-dashoffset: 633;
+    stroke: rgba(0, 0, 0, 0.137);
+    stroke-width: 1.5px;
 }
 
-.of-the-day>.cover>img {
+.outer-circle {
+    stroke-dasharray: 63;
+    fill: none;
+    stroke-width: 2px;
+    transition: 0.4s all ease-in-out;
+}
+
+.card {
     width: 100%;
-    height: 40rem;
-    object-fit: cover;
+    background: white;
+    box-shadow: 3px 3px 15px #ddd, -3px -3px 15px #eee;
 }
 
-.of-the-day>.cover>label {
-    position: absolute;
-    top: 2.2rem;
-    left: -3.3rem;
-    height: 3.3rem;
-    padding: 0 3rem 0 4rem;
-    line-height: 3.3rem;
-    vertical-align: middle;
-    font-size: 1.2rem;
-    color: #FFF;
-    text-shadow: 0 1px 2px #000;
-    background: rgba(136, 86, 168, .6);
-}
-
-.of-the-day>.cover>label>p>span {
-    font-size: 1.4rem;
-    text-transform: uppercase;
-}
-
-.of-the-day>.info {
-    position: relative;
+.count {
     display: flex;
     flex-direction: row;
-    overflow: hidden;
 }
 
-.of-the-day>.info a img {
-    width: 8rem;
-    object-fit: cover;
-    padding: 10%;
+.avatar {
+    width: 100px;
 }
 
-.voters img {
-    display: inline-block;
-    width: 4rem;
-    height: 4rem;
-    margin: 0 2px 0 0;
-    /* line-height: 32px; */
-    vertical-align: middle;
-    border-radius: 100%
+.avatar img {
+    width: 100%;
+    border-radius: 100%;
 }
 
-.voters span {
-    margin: 0
+/* {
+	 display: flex;
+	 flex-direction: row;
+	 padding: 20px;
+} */
+/*  > * {
+	 margin-bottom: 20px;
+} */
+.profile {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 12px;
+}
+
+.blog {
+    color: #ff000d;
+}
+
+.count {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.design,
+.usability,
+.contentScore {
+    width: 100px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+.design svg,
+.usability svg,
+.contentScore svg {
+    width: 100px;
+    height: 100px;
+    transition: 1s all ease-in-out;
+}
+
+.design p,
+.usability p,
+.contentScore p {
+    margin: 0;
+}
+
+@media (max-width: 500px) {
+    .card {
+        width: 90%;
+    }
+
+    .profile {
+        flex-direction: column;
+    }
+
+    .count {
+        justify-content: center;
+    }
+
+    .profile-info {
+        text-align: center;
+    }
 }

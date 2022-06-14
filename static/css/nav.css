@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,300);
+
 body{
   color:black;
   font-family:"Roboto";
@@ -6,11 +7,15 @@ body{
   font-size: 1.2rem;
   overflow-x: hidden !important;
 }
+
 *:after,
 *:before {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+}
+a, a:hover{
+    text-decoration: none;
 }
 .cd-header{
     position: fixed;
@@ -34,21 +39,22 @@ body{
 }
 .logo-wrap a {
 	cursor: pointer;
-	font-family: 'Montserrat', sans-serif;
 	font-weight: 900;
-	font-size: 2rem;
+	font-size: 3rem;
 	line-height: 2rem;
-	text-transform: uppercase;
+	text-transform: lowercase;
 	letter-spacing: 0.2rem;
-	color: black;
+	color: #444;
 	transition : all 0.3s ease-out;
 }
 .logo-wrap a span{ 
-	color: #8167a9;
+    color: darkgoldenrod;
+    text-transform: uppercase;
 }
 .logo-wrap a:hover {
 	opacity: 0.9;
 }
+
 .menu{
   position: fixed;
   top: 0;
@@ -66,6 +72,7 @@ body{
   text-align:center;
   box-shadow: 0 0 1rem #000;
 }
+
 .active{
   transform: translateZ(0) translateX(0);
   transform: translateZ(0) translateX(0);
@@ -83,6 +90,10 @@ ul{
 li{
   padding:0.7rem 1rem;
 }
+.navbar-form .form-control{
+    background: transparent;
+    outline: none;
+}
 .menu a{
   text-decoration:none;
   padding:1rem 1.5rem;
@@ -91,14 +102,15 @@ li{
   font-size: 1.8rem;
   font-weight: 300;
 }
-.content{
+
+#wrapper .content{
   position:relative;
   width:40rem;
 }
 .button{
   width:6rem;
   height:6rem;
-  margin: 0 3rem 3rem;
+  margin: -1rem 3rem 3rem;
   padding: 1rem;
   cursor:pointer;
   position: relative;
@@ -128,7 +140,7 @@ li{
 }
 
 .nav-open path{
-    stroke: yellow !important;
+    stroke: darkgoldenrod !important;
 }
 .nav-toggle.nav-open .nav-svg .dots {
     left: 2.4rem;
@@ -169,7 +181,7 @@ li{
     transition: background 0.25s ease-out, left 0.25s ease-out;
 }
  .nav-open .nav-svg .dots:before, .nav-open .nav-svg .dots:after{
-    background: yellow !important;
+    background: darkgoldenrod !important;
 }
 .nav-toggle .nav-svg .dots:before, .nav-toggle .nav-svg .dots:after {
     left: 0;
@@ -244,3 +256,5 @@ li{
         transform: none;
    }
 }
+
+

@@ -28,21 +28,24 @@ def create_profile(request):
     return render(request, 'user/create_profile.html', {"form": form, "title": title})
 
     
+@login_required(login_url='/accounts/login/')
 def home(request):
-    title= "aWWWards"
+    title= "aWards"
     date = dt.date.today()
     projects = Project.display_all_projects()
     projects_scores = projects.order_by('-average_score')
     highest_score = None
+    highest_votes = None
     if len(projects) >= 1:
         highest_score = projects_scores[0]
         votes = Vote.get_project_votes(highest_score.id)
         highest_votes = votes[:3]    
         
     return render(request, "home.html", {"date": date, "title": title, "projects": projects, "highest":highest_score, "votes": highest_votes})
+
 @login_required(login_url='/accounts/login/')
 def profile(request, profile_id):
-    title = "aWWWards"
+    title = "aWards"
     try:
         user = User.objects.get(pk = profile_id)
         profile = Profile.objects.get(user = user)
@@ -64,10 +67,11 @@ def profile(request, profile_id):
 def project(request, project_id):
     form = RateProjectForm()
     project = Project.objects.get(pk=project_id)
-    title = project.name.title()
+    title = project.name.title() + " | aWards"
     votes = Vote.get_project_votes(project.id)
     total_votes = votes.count()
-
+    voted = False
+    
     voters_list =[]
     average_list = []
     content_list = []
@@ -82,21 +86,35 @@ def project(request, project_id):
         design_list.append(vote.design)
         usability_list.append(vote.usability)
 
-    voted = False
-    if request.user.id-1 in voters_list or request.user.id == project.profile.id:
-        voted = True
+        try:
+            user = User.objects.get(pk = request.user.id)
+            profile = Profile.objects.get(user = user)
+            voter = Vote.get_project_voters(profile)
+            voted = False
+            if request.user.id in voters_list: 
+                voted = True
+        except Profile.DoesNotExist:
+            voted = False    
+    print("USER")
+    print(request.user.id)
+    print(project.profile.user.id)
+    average_score = 0
+    average_design = 0
+    average_content = 0
+    average_usability = 0
+    if len(average_list) > 0:
+        average_score = sum(average_list) / len(average_list)
+        project.average_score = average_score
+        project.save()  
+    if total_votes != 0:
+        average_design = sum(design_list) / total_votes
+        average_content = sum(content_list) / total_votes
+        average_usability = sum(usability_list) / total_votes 
+        project.average_design = average_design
+        project.average_content =average_content
+        project.average_usability = average_usability
+        project.save()    
 
-    else:
-        voted = False
-    average_score = sum(average_list) / len(average_list)
-    average_design = sum(design_list) / total_votes
-    average_content = sum(content_list) / total_votes
-    average_usability = sum(usability_list) / total_votes   
-    project.average_score = average_score
-    project.average_design = average_design
-    project.average_content =average_content
-    project.average_usability = average_usability
-    project.save()  
     return render(request, 'project/project.html', {"title": title, "form": form, "project": project, "votes": votes, "voted": voted, "total_votes":total_votes})
 
 @login_required(login_url='/accounts/login/')
@@ -129,6 +147,7 @@ def rate_project(request,project_id):
             profile = Profile.objects.get(user = user)
         except Profile.DoesNotExist:
             raise Http404()
+
         if form.is_valid():
             vote = form.save(commit= False)
             vote.voter = profile
@@ -143,7 +162,8 @@ def rate_project(request,project_id):
 def search_project(request):
     if "project" in request.GET and request.GET["project"]:
         searched_project = request.GET.get("project")
-        title = "aWWWards | search"
+        title = "aWards | search"
+        voted = False
         try:
             projects = Project.search_project(searched_project)
             count = projects.count()
@@ -154,15 +174,17 @@ def search_project(request):
                 title = project.name.upper()
                 votes = Vote.get_project_votes(project.id)
                 voters = project.voters
-
-                voters_list =[]
+                
                 for vote in votes:
-                    voters_list.append(vote.voter.id)
-                voted = True
-                if request.user.id-1 in voters_list or request.user.id == project.profile.user.id:
-                    voted = False
-                else:
-                    voted = True
+                    try:
+                        user = User.objects.get(pk = request.user.id)
+                        profile = Profile.objects.get(user = user)
+                        voter = Vote.get_project_voters(profile)
+                        voted = False
+                        if request.user.id in voters: 
+                            voted = True
+                    except Profile.DoesNotExist:
+                        voted = False
                 return render(request, 'project/project.html', {"form": form, "project": project, "voted": voted, "votes": votes, "title": title})
             return render(request, 'project/search.html', {"projects": projects,"message": message, "count":count, "title": title})
         except ObjectDoesNotExist:
@@ -170,7 +192,7 @@ def search_project(request):
             message= f"Found NO projects titled {searched_project}"
             return render(request, 'project/search.html', {"suggestions":suggestions,"message": message, "title": title})
     else:
-        message = "You haven't searched for any term" 
+        message = "You haven't searched for any term"
         return render(request,'project/search.html', {"message": message, "title": title})
 
 class ProjectList(APIView):
@@ -183,4 +205,4 @@ class ProfileList(APIView):
     def get(self,request,format = None):
         profiles =  Profile.objects.all()
         serializers = ProfileSerializer(profiles, many=True)
-        return Response(serializers.data)  
+        return Response(serializers.data) 

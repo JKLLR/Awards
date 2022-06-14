@@ -1,5 +1,6 @@
-body{
-    padding-top: 9%;
+body {
+    padding-top: 12rem;
+    padding-bottom: 4rem;
 }
 
 .profile {
@@ -32,23 +33,33 @@ body{
     object-fit: cover;
 }
 
-.username{
+.username {
     font-weight: 900;
     font-size: 2.5rem;
     letter-spacing: .1rem;
 }
-.location{
+
+.username .fas {
+    font-size: 1.6rem;
+    margin-bottom: 1%;
+}
+
+.location {
     font-size: 1.2rem;
     margin-bottom: 3%;
 }
-.bio, .phone, .email{
+
+.bio,
+.email {
     font-size: 1.4rem;
     margin-bottom: 2%;
 }
-.phone span, .email span{
-    font-size: 2.4rem;
+
+.email span {
+    font-size: 2rem;
     font-weight: 700;
 }
+
 label {
     padding: 0 1.3rem;
     vertical-align: middle;
@@ -71,27 +82,37 @@ label>span {
     text-transform: uppercase;
 }
 
-.count{
-    padding: 0 3% 3%;
+.count {
+    padding: 0 6% 3%;
     display: flex;
     flex-direction: row;
 }
-.projects{
+
+.projects {
     font-size: 1.4rem;
     font-weight: 800;
     margin-right: 3%;
 }
-.votes{
+
+.votes {
     font-size: 1.4rem;
 }
 
+/* SUBMISSIONS */
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+@import 'https://fonts.googleapis.com/css?family=Roboto:700,400';
+
 .submissions-wrapper {
-    padding-left: 5%;
-    padding-right: 5%;
+    padding-left: 7%;
+    padding-right: 7%;
+    display: flex;
+    flex-wrap: wrap;
 }
+
 a {
     text-decoration: none;
-    color: #3498db;
+    color: darkgoldenrod;
+    font-weight: 800;
 }
 
 a:hover {
@@ -159,8 +180,9 @@ h3 {
 .card__image img {
     width: 100%;
     max-width: 100%;
-    height: 20rem ;
+    height: 20rem;
     display: block;
+    object-fit: cover;
 }
 
 .card__content {
@@ -168,21 +190,29 @@ h3 {
 }
 
 /* card meta */
+.card__meta a {
+    margin-right: 0.8rem;
+}
+
 .card__meta time {
     font-size: 1.5rem;
     color: #bbb;
-    margin-left: 0.8rem;
 }
 
 /* card article */
 .card__article a {
     text-decoration: none;
+    text-transform: capitalize;
     color: #444;
     transition: all 0.5s ease;
 }
 
 .card__article a:hover {
     color: #2980b9;
+}
+
+.card__article p {
+    font-size: 1.2rem;
 }
 
 /* card action */
@@ -201,10 +231,12 @@ h3 {
 }
 
 .card__author img {
+    object-fit: cover;
+    width: 4rem;
+    height: 4rem;
     border-radius: 50%;
     margin-right: 0.6em;
 }
-
 
 .card__share {
     float: right;
@@ -223,7 +255,7 @@ h3 {
     background-color: #fff;
     transition: all 0.3s ease;
     outline: 0;
-
+    font-size: 1.5rem;
     box-shadow:
         0 2px 4px rgba(0, 0, 0, 0.12),
         0 2px 4px rgba(0, 0, 0, 0.24);
@@ -240,14 +272,4 @@ h3 {
     -ms-transform: scale(1.2);
     -o-transform: scale(1.2);
     transform: scale(1.2);
-}
-
-@media (max-width: 425px) {
-    .profile{
-        display: flex;
-        flex-direction: column;
-    }
-    .profile-left, .profile-center, .profile-right{
-        width: 100%;
-    }
 }
