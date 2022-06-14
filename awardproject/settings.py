@@ -48,10 +48,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-cloudinary.config( 
-  cloud_name = "dnrny9lzh", 
-  api_key = "899794324973136", 
-  api_secret = "a5aNCEo4affViIODCc7sAsuNHm4" 
+cloudinary.config(
+  cloud_name = config('CLOUD_NAME'),
+  api_key = config('API_KEY'),
+  api_secret = config('API_SECRET'),
 )
 
 MIDDLEWARE = [
@@ -143,6 +143,17 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_URL = "/accounts/login/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/"
+
+# Email configurations remember to install python-decouple
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
