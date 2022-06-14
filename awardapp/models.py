@@ -3,7 +3,7 @@ from cloudinary.models import CloudinaryField
 from django.contrib.auth.models import User
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    profile_pic = CloudinaryField('project screenshot')
+    profile_pic = CloudinaryField('profile pic')
     bio =  models.TextField()
     location = models.CharField(max_length=40)
     email = models.EmailField()
@@ -26,7 +26,7 @@ class Profile(models.Model):
         
 class Project(models.Model):
     name = models.CharField(max_length = 30)
-    screenshot = CloudinaryField('image')
+    screenshot = CloudinaryField('project screenshot')
     description = models.TextField()
     link = models.URLField()
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
