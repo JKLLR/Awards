@@ -1,5 +1,6 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 import datetime as dt
 from django.urls import reverse
 from awardapp.models import Profile, Project
@@ -27,8 +28,22 @@ def create_profile(request):
     return render(request, 'user/create_profile.html', {"form": form})
 
 
-def profile(request):
-    return render(request, "user/profile.html")
+@login_required(login_url='/accounts/login/')
+def profile(request, profile_id):
+    title = "aWWWards"
+    try:
+        profile = Profile.objects.get(id =profile_id)
+        title = profile.user.username
+        projects = Project.get_user_projects(profile.id)
+        projects_count = projects.count()
+        votes= []
+        for project in projects:
+            votes.append(project.average_score)
+        total_votes = sum(votes)
+        average = total_votes / len(projects)
+    except Profile.DoesNotExist:
+        raise Http404()        
+    return render(request, "user/profile.html", {"profile": profile, "projects": projects, "count": projects_count, "votes": total_votes, "average": average})
 
 def project(request):
     form = RateProjectForm()
