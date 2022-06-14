@@ -88,11 +88,6 @@ def project(request, project_id):
 
     else:
         voted = False
-    print("IDS")
-    print(request.user.id)
-    print(voters_list[0])
-    print(voters_list[1])
-    print(project.profile.id)
     average_score = sum(average_list) / len(average_list)
     average_design = sum(design_list) / total_votes
     average_content = sum(content_list) / total_votes
