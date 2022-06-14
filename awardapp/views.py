@@ -1,11 +1,9 @@
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 import datetime as dt
-
 from django.urls import reverse
-
 from awardapp.models import Profile, Project
-from .forms import AddProjectForm, RateProjectForm
+from .forms import AddProjectForm, CreateProfileForm, RateProjectForm
 
 # Create your views here.
 
@@ -13,6 +11,21 @@ from .forms import AddProjectForm, RateProjectForm
 def home(request):
     date = dt.date.today()
     return render(request, "home.html", {"date": date})
+
+def create_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        form = CreateProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = current_user
+            profile.save()
+        return HttpResponseRedirect('/')
+
+    else:
+        form = CreateProfileForm()
+    return render(request, 'user/create_profile.html', {"form": form})
+
 
 def profile(request):
     return render(request, "user/profile.html")

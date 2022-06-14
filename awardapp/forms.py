@@ -1,6 +1,11 @@
 from django import forms
-from .models import Project
+from .models import Profile, Project
 from django.forms import ModelForm
+
+class CreateProfileForm(ModelForm):
+    class Meta:
+        model = Profile
+        exclude = ['user']
 
 class AddProjectForm(ModelForm):
     class Meta:
