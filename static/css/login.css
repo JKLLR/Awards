@@ -40,7 +40,7 @@ body {
     left: 5%;
     background: #444;
     width: 49%;
-    height: 130%;
+    height: 1500%;
     border-radius: 5px;
     box-shadow: 2px 0 10px rgba(0, 0, 0, .1);
     z-index: 2;
@@ -69,7 +69,6 @@ body {
 /* font & button styling */
 h1 {
     text-align: center;
-    margin-top: 8rem;
     text-transform: uppercase;
     color: #f6f6f6;
     font-size: 2em;

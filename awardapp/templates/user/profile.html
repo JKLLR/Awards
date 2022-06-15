@@ -1,69 +1,71 @@
-{%extends 'base.html'%}
-{% load static %}
-{% block styles %}
-{{ block.super}}
-<link rel="stylesheet" href="{% static 'css/profile.css' %}">
-{% endblock %}
+{% extends 'base.html' %}
+{% block title %} Sign Up Page {% endblock %}
 
-{% block content %}
-<div class="profile">
-    <div class="profile-left"></div>
-    <div class="profile-center text-center">
-        <img src="{{profile.profile_pic.url}}" class="profile-image">
-        <a href="{{profile.link}}" target="_blank"><h3 class="username">{{profile.user.username}}&nbsp;<sup><i class="fas fa-share"></i></sup></h3></a>
-        <div class="text-muted location">{{profile.location}}</div>
-        <div class="bio">{{profile.bio}}</div>
-        <div class="email"><span><i class="fas fa-at"></i></span>&nbsp;&nbsp;jeffhuria@gmail.com</div>
+{% block content%}
+<section style="background-color: #eee;" class="profile">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+                {% if my_profile.profile_picture%}
+                <img src="{{my_profile.profile_picture.url}}" alt="profile_picture"
+                class="img-fluid"
+                style="width: 240px; border-radius: 80px;">
+
+                {% else%}
+                <h1>No Image</h1>
+                {% endif %}
+              <h5 class="my-3">{{user.username}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{my_profile.name}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{my_profile.contact_email}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Bio</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{my_profile.bio}}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Address</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">{{my_profile.location}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+         
+        </div>
+      </div>
     </div>
-    <div class="profile-right">
-		{%if average == 0%}
-		{%else%}
-		<label><span>{{average | floatformat:0}}</span> average score</label>
-		{% endif %}
-    </div>
-</div>
-<hr>
-<div class="count">
-	{%if count == 1 %}
-	<div class="projects">{{count}} Project</div>
-	{%else%}
-	<div class="projects">{{count}} Projects</div>
-	{%endif%}
-</div>
-<div class="submissions-wrapper">
-	{% for project in projects %}
-	<div class="col-md-4">
-		<div class="card radius shadowDepth1">
-			<div class="card__image border-tlr-radius">
-				<a href="{% url 'project' project.id %}"><img src="{{project.screenshot.url}}"
-					alt="image" class="border-tlr-radius"></a>
-			</div>
-			<div class="card__content card__padding">
-				<div class="card__share">
-					<a id="share" class="share-icon" href="{{project.link}}" target="_blank"><i class="fas fa-share"></i></a>
-				</div>
-				<div class="card__meta">
-					{%if project.average_score != 0.0 %}
-					<a href="#">{{project.average_score}}</a>
-					{%else%}
-					{% endif %}
-					<time>{{project.post_date}}</time>
-				</div>
-				<article class="card__article">
-					<h3><a href="{% url 'project' project.id %}">{{project.name}}</a></h3>
-					<p>{{project.description}}</p>
-				</article>
-			</div>
-			<div class="card__action">
-				<div class="card__author">
-					<img src="{{project.profile.profile_pic.url}}" alt="user">
-					<div class="card__author-content">
-						By <a href="{% url 'profile' project.profile.user.id %}">{{project.profile.user.username}}</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	{% endfor %}
-</div>
-{% endblock %}
+  </section>
+
+{% endblock%}
+
+

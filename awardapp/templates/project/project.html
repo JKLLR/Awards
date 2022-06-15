@@ -1,4 +1,5 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load bootstrap4 %}
 {% load static %}
 {% block styles %}
@@ -8,70 +9,145 @@
 
 {% block content %}
 <div class="image">
-    <img src="{{project.screenshot.url}}" alt="...">
+  <img src="{{post.photo.url}}" class="img-fluid" />
 </div>
 
-{% if voted %}
-{% else %}
-<a href="#rate-form" onclick="openTab(event, 'Rate')">
-    <div class="vote text-center">Rate project now</div>
-</a>
-{% endif %}
-<div class="details text-center">
-    <div class="title"><a href="{{project.link}}" target="_blank">{{project.name}}&nbsp;<sup><i class="fas fa-share" style="font-size: 1.9rem;"></i></sup></a></div>
-    <div class="owner">BY <span><a href="{% url 'profile' project.profile.user.id %}">{{project.profile.user.username}}</a></span> FROM {{project.profile.location}}</div>
-    <div class="description">{{project.description}}</div>
-    <div class="d-flex">
-        <div id="average">{{project.average_score | floatformat:0}}<span>average</span></div>
-        <div class="design">{{project.average_design | floatformat:0}}<span>design</span></div>
-        <div class="usability">{{project.average_usability | floatformat:0}}<span>usability</span></div>
-        <div class="content">{{project.average_content | floatformat:0}}<span>content</span></div>
-    </div>
-    <div class="tabs">
-        <div class="tablinks" onclick="openTab(event, 'Votes')" id="defaultOpen">Votes</div>
-        <div class="tablinks" onclick="openTab(event, 'Rate')">Rate project</div>
-    </div>
-    <hr>
-    <div id="Votes" class="tabcontent">
-        {% if votes %}
-        <div class="vote-titles">
-            <img src="" alt="voter" class="invisible">
-            <p class="voter-name"></p>
-            <p class="vote-title ">Content</p>
-            <p class="vote-title ">Design</p>
-            <p class="vote-title ">Usability</p>
-        </div>
-        {% for vote in votes%}
-        <div class="vote-details">
-            <img src="{{vote.voter.profile_pic.url}}" alt="voter" class="voter-image">
-            <p class="voter-name">{{vote.voter.user.username}}</p>
-            <p class="content-vote">{{vote.content | floatformat:0}}</p>
-            <p class="design-vote">{{vote.design | floatformat:0}}</p>
-            <p class="usability-vote">{{vote.usability | floatformat:0}}</p>
-        </div>
-        {% endfor %}
-        {% else %}
-        <div class="text-center have-already">No votes yet</div>
-        {% endif %}
-    </div>
-    <div id="Rate" class="tabcontent">
-        {% if voted %}
-        <div class="text-center have-already">You have already rated this project</div>
-        {% else %}
-        <div id="rate-form">
-            <div class="text-center">
-                <div class="title">Rate project</div>
-                <hr>
-                <div class="guide">Rate the project based on usability, content and design</div>
+<div class="container" id="indexcontainer">
+    <i style="float:left"></i>
+
+    <div class="featured">
+   </div>
+    <section id="content">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="title"><a href="{{post.link}}" target="_blank">{{post.title}}&nbsp;<sup><i class="fas" style="font-size: 1.9rem;"></i></sup></a></div>
             </div>
-            <form action="{%url 'rate_project' project_id=project.id%}" method="post">
-                {%csrf_token%}
-                {% bootstrap_form form%}
-                <input type="submit" class="btn btn-dark " value=" Rate Project">
-                <br>
+            <hr>
+            <div class="col-sm-4">
+              <p class="mb-0" id="header">Posted By:</p>
+            </div>
+            <div class="col-sm-8">
+              <p class="text-muted mb-0">{{post.user.username|title}}</p>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-4">
+                <p class="mb-0" id="header">Description:</p>
+              </div>
+              <div class="col-sm-8">
+                <p class="text-muted mb-0">{{post.description}}</p>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-sm-4">
+                <p class="mb-0" id="header">Date Posted:</p>
+              </div>
+              <div class="col-sm-8">
+                <p class="text-muted mb-0">{{post.date|date}}</p>
+              </div>
+            </div>
+            <hr>
+            <h5 class="text-center mb-3">Project Ratings</h5>
+            {% for rating in post.ratings.all %}
+                {% if forloop.counter is post.ratings.all.count %}
+            <div class="row">
+
+              <div class="col-sm-4">
+                <p class="mb-0" id="header">Design:</p>
+              </div>
+              <div class="col-sm-8">
+                <p class="text-muted mb-0">{{ rating.design_average}}</p>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
+
+                <div class="col-sm-4">
+                  <p class="mb-0" id="header">Usability:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{ rating.usability_average }}</p>
+                </div>
+              </div>
+              <hr>
+
+              <div class="row">
+
+                <div class="col-sm-4">
+                  <p class="mb-0" id="header">Content:</p>
+                </div>
+                <div class="col-sm-8">
+                  <p class="text-muted mb-0">{{ rating.content_average }}</p>
+                </div>
+              </div>
+            {% endif %}
+            {% endfor %}
+            <div class="row mt-4">
+              <div class="col-sm-4">
+              </div>
+              <div class="col-sm-8">
+                <a href="{{post.link}}" class="btn btn-outline-danger " style="text-align:center"id="btn1">Visit Project</a>
+  
+              </div>
+            </div>
+          </div>
+  
+      </div>
+      </div>
+  
+    </section>
+    
+  </div>
+  <div class="container mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Rate this Project</h3>
+           
+            {% if user.is_authenticated %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-sm btn-info">Rate</button>
             </form>
+            {% endif %}
+       </div>
+        <div class="col-md-6">
+            <h3 class="D-block mx-auto">Ratings Scores</h3>
+            {% for rating in post.ratings.all %}
+            {% if forloop.counter is post.ratings.all.count %}
+            <a class="btn btn-info btn-sm" ><h5>{{ rating.score }}</h5>
+                <span class="sc">Average Score</span>
+            </a>
+            <a class="btn btn-outline-success btn-sm" ><h5>{{ rating.design_average }}</h5>
+                <span class="sc">Design Average</span>
+            </a>
+            <a class="btn btn-outline-primary btn-sm" id="u"><h5>{{ rating.usability_average }}</h5>
+                <span class="sc">Usability Average</span>
+            </a>
+            <a class="btn btn-outline-danger btn-sm" id="c"><h5>{{ rating.content_average }}</h5>
+                <span class="sc">Content Average</span>
+            </a>
+            {% endif %}
+            {% endfor %}
         </div>
-        {% endif %}
+        
     </div>
 </div>
 {% endblock %}
+
+{% if rating_status %}
+<h5>You have already voted</h5>
+{% else %}
+{% if user.is_authenticated %}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button class="btn btn-sm btn-info">Rate</button>
+</form>
+{% endif %}
+{% endif %}
+

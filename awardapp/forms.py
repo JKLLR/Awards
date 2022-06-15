@@ -1,26 +1,29 @@
-from .models import Project, Profile, Vote
-from django.forms import ModelForm
 from django import forms
+from .models import Post, Profile,Rating
+from django.contrib.auth.models import User
 
-class CreateProfileForm(ModelForm):
+
+
+class PostForm(forms.ModelForm):
+    photo=forms.ImageField(label="")
     class Meta:
-        model = Profile
-        exclude = ['user']
-        
-class AddProjectForm(ModelForm):
+        model=Post
+        fields=('photo','title','link','description')
+
+class UpdateUserForm(forms.ModelForm):
+    email=forms.EmailField(max_length=254,help_text='Required.Inform a valid email addres')
     class Meta:
-        model = Project
-        exclude = ['profile', 'post_date', 'voters', 'design_score','usability_score','content_score','average_design','average_usability','average_content','average_score']
+        model= User
+        fields=('username','email')
 
-class RateProjectForm(ModelForm):
+class UpdateUserProfileForm(forms.ModelForm):
+    email=forms.EmailField(max_length=254,help_text='Required.Inform a valid email addres')
     class Meta:
-        model = Vote
-        exclude = ['post_date', 'voter', 'project'] 
-
-        
-# class RateProjectForm(forms.Form):
-#     design = forms.IntegerField(min_value= 1, max_value=10)
-#     usability = forms.IntegerField(min_value= 1, max_value=10)
-#     content = forms.IntegerField(min_value= 1, max_value=10)
+        model= Profile
+        fields=('name','bio','profile_picture','location')
 
 
+class RatingsForm(forms.ModelForm):
+    class Meta:
+        model = Rating
+        fields = ['design', 'usability', 'content']

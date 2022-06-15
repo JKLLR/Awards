@@ -21,9 +21,5 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('awardapp.urls')),
-    path('accounts/register/',RegistrationView.as_view(success_url='/email'),name='django_registration_register'),
-    path('accounts/', include('django_registration.backends.one_step.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('logout/', auth_views.LogoutView.as_view()), 
+    path('',include('awardapp.urls')), 
 ]

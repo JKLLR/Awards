@@ -1,14 +1,31 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns=[
-    path('',views.home,name = 'home'),
-    path('create_profile/',views.create_profile,name = 'create_profile'),
-    path('profile/(<profile_id>\d+)',views.project,name = 'profile'),
-    path('project/',views.project,name = 'project'),
-    path('add_project/',views.add_project,name = 'addproject'),
-    path('rate_project/(<image_id>\d+)',views.rate_project,name = 'rate_project'),
-    path('search_project/(<image_id>\d+)',views.search_project,name = 'search_project'),
-    path('api/projects/', views.ProjectList.as_view()),
-    path('api/profiles/', views.ProfileList.as_view()),
+    path('',views.welcome,name='welcome'),
+    path('',views.index,name='index'),
+    path('login/',views.signin,name='login'),
+    path('register/',views.register,name='register'),
+    path('signout/',views.signout,name='signout'),
+    path('profile/',views.profile,name='profile'),
+    path('addpost/',views.addpost,name='addpost'),
+    path('new-project/', views.postproject, name='newproject'),
+    path('update', views.update_profile, name='update'),
+    path('search/', views.search_project, name='search'),
+    path('vote/(<post_id>\d+)', views.project, name='vote'), 
+    path('api/post/', views.PostItems.as_view()),
+    path('api/profile/', views.ProfileItems.as_view()),
+    path('api-token-auth/', obtain_auth_token),
+    path('api/profile',views.ProfileItems.as_view(), name='apiprofiles'),
+
+
+
+   
+    
 ]
+if settings.DEBUG:
+    urlpatterns+= static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
