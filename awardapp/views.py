@@ -167,7 +167,7 @@ def search_project(request):
             'results': results,
             'message': message
         }
-        return render(request, 'search.html', params)
+        return render(request, 'project/search.html', params)
     else:
         message = "You haven't searched for any image category"
     return render(request, 'project/search.html', {'message': message})
