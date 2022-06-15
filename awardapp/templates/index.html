@@ -20,7 +20,10 @@
         </div>
         <div class="card-footer">
 
-          <a href="/profile/"><small class="text-muted" id="small"><img src="{{post.user.profile.profile_picture.url}}" class="nav-img mr-2"
+          <a href="/profile/"><small class="text-muted" id="small"><img src="{{post.user.profile.profile_picture.url}}" class="nav-img mr-2" style="
+            width: 25%;
+            border-radius: 50%;
+        "
               alt=""></small></a>              
           <small class="text-muted" id="small"> Posted By: {{post.user.username|title}}</small>
         </div>
