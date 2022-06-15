@@ -52,10 +52,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-cloudinary.config(
-  cloud_name = config('CLOUD_NAME'),
-  api_key = config('API_KEY'),
-  api_secret = config('API_SECRET'),
+cloudinary.config( 
+  cloud_name = "dnrny9lzh", 
+  api_key = "899794324973136", 
+  api_secret = "a5aNCEo4affViIODCc7sAsuNHm4" 
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
