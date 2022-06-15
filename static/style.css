@@ -6,6 +6,14 @@
     width: 100%;
 }
 
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+    color: #f6f6f6;
+    font-size: 2em;
+    letter-spacing: 8px;
+}
+
 #cont img{
     width: 100%;
     object-fit: cover;
@@ -21,12 +29,7 @@
     width: 25%;
     border-radius: 50%;
 }
-#btn:hover{
-    background-color: black;
-    color: rgb(255, 255, 255);
-    outline-color: white;
-    transition: 0.9s;
-}
+
 #btn{
     background-color: gold;
     color: rgb(255, 255, 255);
