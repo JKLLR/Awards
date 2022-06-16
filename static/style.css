@@ -38,8 +38,6 @@ h1 {
 #btn1:hover{
     background-color: black;
     color: rgb(255, 255, 255);
-    outline-color: white;
-    transition: 0.9s;
 }
 #btn1{
     background-color: gold;
